@@ -125,10 +125,10 @@ def register_view(request):
 
                 send_mail(
                     subject="AGRO Portal - Verify Your Email",
-                    message=f"Hello {user.first_name or user.username},\n\nYour OTP for registration on AGRO Portal is: {otp}\n\nThank you!",
+                    message=message_body,  # your email content
                     from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[email],
-                    fail_silently=False,
+                    recipient_list=[user.email],
+                    fail_silently=True,  # Set this to True so registration completes even if SMTP delays
                 )
                 
                 request.session['verify_user_id'] = user.id
