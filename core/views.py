@@ -447,14 +447,15 @@ def forgot_password_request_view(request):
             otp = profile.generate_otp()  # Generates 6-digit OTP
             
             try:
-                # Send email via Gmail SMTP
                 send_mail(
-                    subject="AGRO Portal - Password Reset OTP",
-                    message=f"Hello {user.first_name or user.username},\n\nYour OTP code to reset your password is: {otp}\n\nIf you did not request this, please ignore this message.",
+                    subject="AGRO Portal - Verify Your Email",
+                    message=message_body,
                     from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[user.email],  # <--- Sends directly to Gmail
+                    recipient_list=[user.email],
                     fail_silently=False,
-                )
+                    )
+            except Exception as e:
+                print(f"EMAIL ERROR: {e}")
                 
                 request.session['reset_user_id'] = user.id
                 messages.success(request, f"Password reset OTP sent to Gmail ({user.email}).")
