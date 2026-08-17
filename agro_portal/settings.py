@@ -20,7 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',  
+    'core',
+    'anymail',  
 ]
 
 MIDDLEWARE = [
@@ -90,7 +91,7 @@ LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'index'
 
 # Real GKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -98,3 +99,7 @@ EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'agroportal.help@gmail.com'  # Replace with your Gmail address
 EMAIL_HOST_PASSWORD = 'pkea eaob bafk slza'  # Replace with your 16-character App Password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+ANYMAIL = {
+    "BREVO_API_KEY": os.environ.get("BREVO_API_KEY", ""),
+}
+DEFAULT_FROM_EMAIL = "agroportal.help@gmail.com"
