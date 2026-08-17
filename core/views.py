@@ -99,7 +99,7 @@ def register_view(request):
             messages.error(request, "Email address is already registered.")
             return redirect('register')
 
-        # Use atomic transaction to prevent dangling users if email fails
+        # Use atomic transaction to prevent dangling users if creation fails
         try:
             with transaction.atomic():
                 user = User.objects.create_user(
@@ -123,20 +123,27 @@ def register_view(request):
 
                 otp = profile.generate_otp()
 
-                send_mail(
-                    subject="AGRO Portal - Verify Your Email",
-                    message=message_body,  # your email content
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[user.email],
-                    fail_silently=True,  # Set this to True so registration completes even if SMTP delays
-                )
-                
+                # Define the message body explicitly
+                message_body = f"Hello {user.first_name},\n\nYour OTP for AGRO Portal registration is: {otp}\n\nPlease enter this code to verify your email address."
+
+                try:
+                    send_mail(
+                        subject="AGRO Portal - Verify Your Email",
+                        message=message_body,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[user.email],
+                        fail_silently=True,
+                    )
+                except Exception as mail_err:
+                    print(f"EMAIL SEND ERROR: {mail_err}")
+
                 request.session['verify_user_id'] = user.id
                 messages.success(request, f"OTP sent to {email}. Please check your inbox.")
                 return redirect('verify_email_otp')
 
-        except (socket.gaierror, Exception) as e:
-            messages.error(request, "Unable to send verification email. Please check your network connection and credentials.")
+        except Exception as e:
+            print(f"REGISTRATION ERROR: {e}")
+            messages.error(request, "Unable to complete registration. Please check your details and try again.")
             return redirect('register')
 
     return render(request, 'core/register.html')
@@ -439,31 +446,28 @@ def forgot_password_request_view(request):
     if request.method == 'POST':
         email = request.POST.get('email', '').strip()
         
-        # Look up user by email address
         user = User.objects.filter(email__iexact=email).first()
         
         if user and user.email:
             profile, _ = Profile.objects.get_or_create(user=user)
-            otp = profile.generate_otp()  # Generates 6-digit OTP
+            otp = profile.generate_otp()
             
+            message_body = f"Hello,\n\nYour OTP for resetting your AGRO Portal password is: {otp}\n\nIf you did not request this, please ignore this email."
+
             try:
                 send_mail(
-                    subject="AGRO Portal - Verify Your Email",
+                    subject="AGRO Portal - Reset Your Password",
                     message=message_body,
                     from_email=settings.DEFAULT_FROM_EMAIL,
                     recipient_list=[user.email],
-                    fail_silently=False,
-                    )
+                    fail_silently=True,
+                )
             except Exception as e:
                 print(f"EMAIL ERROR: {e}")
-                
-                request.session['reset_user_id'] = user.id
-                messages.success(request, f"Password reset OTP sent to Gmail ({user.email}).")
-                return redirect('forgot_password_verify')
-                
-            except Exception as e:
-                messages.error(request, f"Failed to send email: {str(e)}. Please check your network connection.")
-                return redirect('forgot_password_request')
+
+            request.session['reset_user_id'] = user.id
+            messages.success(request, f"Password reset OTP sent to Gmail ({user.email}).")
+            return redirect('forgot_password_verify')
         else:
             messages.error(request, "No account found with that email address.")
             
