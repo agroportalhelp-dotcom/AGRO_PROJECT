@@ -1,0 +1,96 @@
+{% extends 'core/base.html' %}
+{% block title %}Add New Farmer | AGRO Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-card {
+        border: none;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+    }
+    .auth-header-accent {
+        background: linear-gradient(135deg, #114b29 0%, #1c6d3c 100%);
+        padding: 35px 20px;
+        color: #ffffff;
+        text-align: center;
+    }
+    .django-form-wrapper p {
+        margin-bottom: 1.25rem;
+    }
+    .django-form-wrapper label {
+        display: block;
+        font-weight: 700;
+        font-size: 0.85rem;
+        color: #495057;
+        margin-bottom: 0.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .django-form-wrapper input {
+        display: block;
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+    .django-form-wrapper input:focus {
+        border-color: #198754;
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+    }
+    .btn-register {
+        background: linear-gradient(135deg, #198754 0%, #145a32 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 700;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-11">
+        <div class="card auth-card">
+            <div class="auth-header-accent">
+                <div class="mb-2">
+                    <span class="p-3 bg-white bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 55px; height: 55px;">
+                        <i class="fa-solid fa-user-plus fs-3 text-warning"></i>
+                    </span>
+                </div>
+                <h3 class="fw-bold mb-1">Administrative Registry</h3>
+                <p class="mb-0 text-white-50 small">Create a cooperative farmer account directly in the system</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="django-form-wrapper">
+                        {{ form.as_p }}
+                    </div>
+
+                    <div class="row g-2 mt-4">
+                        <div class="col-6">
+                            <a href="{% url 'farmer_list' %}" class="btn btn-outline-secondary w-100 py-3 rounded-3 fw-bold">Cancel</a>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-register btn-success w-100 text-white shadow-sm py-3">
+                                Create Farmer
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

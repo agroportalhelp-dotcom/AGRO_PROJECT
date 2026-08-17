@@ -1,0 +1,178 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}AGRO Portal | Home{% endblock %}
+
+{% block extra_css %}
+<style>
+    .banner-img {
+        width: 100%;
+        max-height: 380px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        border: 4px solid rgba(255, 255, 255, 0.25);
+    }
+    .action-card {
+        border: none;
+        border-radius: 16px;
+        background: white;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .action-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+    .icon-square {
+        width: 65px;
+        height: 65px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <!-- GREEN AGRI BACKGROUND WITH BANNER -->
+    <div class="agri-banner-bg mb-5 text-center text-white">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6 text-lg-start px-4">
+                <span class="badge bg-warning text-dark mb-2 fw-bold text-uppercase px-3 py-2">Farming Innovation</span>
+                <h1 class="display-4 fw-bold">Connecting Farmers Directly to the Market</h1>
+                <p class="lead text-light opacity-90">Maximize crop yields with verified soil analytics and eliminate mediators for better profits.</p>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-warning btn-lg fw-bold px-4 shadow">Get Started Now <i class="fa-solid fa-arrow-right ms-2"></i></a>
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <img src="{% static 'banner.png' %}" alt="Agro Crop Banner" class="banner-img">
+            </div>
+        </div>
+    </div>
+
+    <!-- NEWS & PORTAL UPDATES TICKER BLOCK -->
+    <div class="card border-success mb-5 shadow-sm">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-bold">📢 Latest Agriculture & Portal Updates</h4>
+            {% if user.is_superuser or user.is_staff %}
+                <a href="/admin/core/siteupdate/add/" class="btn btn-light btn-sm fw-bold">➕ Add Live Update</a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for update in updates %}
+                    <li class="list-group-item py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-1 text-success fw-bold">{{ update.title }}</h5>
+                            <div>
+                                <small class="text-muted me-3">{{ update.created_at|date:"d M Y" }}</small>
+                                {% if user.is_superuser or user.is_staff %}
+                                    <a href="/admin/core/siteupdate/{{ update.id }}/change/" class="badge bg-warning text-dark text-decoration-none">✏️ Edit / Delete</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <p class="mb-0 text-secondary">{{ update.content }}</p>
+                    </li>
+                {% empty %}
+                    <p class="text-muted text-center my-3">No news updates posted yet.</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- QUICK OPERATIONS BLOCK -->
+    <h3 class="fw-bold text-dark mb-4"><i class="fa-solid fa-circle-dot text-success me-2"></i>Quick Actions & Management</h3>
+    <div class="row g-4 mb-5">
+        <div class="col-md-3 col-sm-6">
+            <div class="card action-card p-4 text-center h-100 shadow-sm">
+                <div class="icon-square bg-success bg-opacity-10 text-success mx-auto">
+                    <i class="fa-solid fa-seedling"></i>
+                </div>
+                <h5 class="fw-bold text-dark">Track New Crop</h5>
+                <p class="text-muted small">Log fields, soil types, and sowed dates.</p>
+                <a href="{% url 'add_crop' %}" class="btn btn-success btn-sm w-100 mt-auto fw-bold">Add Crop <i class="fa-solid fa-plus ms-1"></i></a>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card action-card p-4 text-center h-100 shadow-sm">
+                <div class="icon-square bg-primary bg-opacity-10 text-primary mx-auto">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </div>
+                <h5 class="fw-bold text-dark">Sell in Market</h5>
+                <p class="text-muted small">List harvest batches directly for buyers.</p>
+                <a href="{% url 'add_product' %}" class="btn btn-primary btn-sm w-100 mt-auto fw-bold">List Product <i class="fa-solid fa-plus ms-1"></i></a>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6">
+            <div class="card action-card p-4 text-center h-100 shadow-sm">
+                <div class="icon-square bg-warning bg-opacity-10 text-warning mx-auto">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h5 class="fw-bold text-dark">Add New Farmer</h5>
+                <p class="text-muted small">Register regional cooperative growers.</p>
+                <a href="{% url 'add_farmer' %}" class="btn btn-warning btn-sm w-100 mt-auto text-dark fw-bold">Add Farmer <i class="fa-solid fa-plus ms-1"></i></a>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+    <div class="card p-3 border-0 shadow-sm text-center h-100 rounded-4">
+        <div class="my-3">
+            <i class="fa-solid fa-globe fa-2x text-primary"></i>
+        </div>
+        <h5 class="fw-bold">Helpful Sites</h5>
+        <p class="text-muted small">Access external agricultural portals and resources.</p>
+        <div class="mt-auto">
+            <!-- This directs the button to /helpful-sites/ -->
+            <a href="{% url 'helpful_sites' %}" class="btn btn-primary w-100 fw-bold">
+                Visit Links <i class="fa-solid fa-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+    <!-- CORE PORTALS -->
+    <h3 class="fw-bold text-dark mb-4"><i class="fa-solid fa-sliders text-success me-2"></i>Core Portals</h3>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-4 rounded-4 h-100 bg-white">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-success text-white rounded-3 p-3 me-3 fs-3">
+                        <i class="fa-solid fa-shop"></i>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold text-dark mb-0">Browse Marketplace</h4>
+                        <p class="text-muted mb-0">No mediator fees. Direct farmer-to-buyer transactions.</p>
+                    </div>
+                </div>
+                <p class="text-secondary">View high-quality, verified listings of wheat, cotton, sugar, and organic vegetables posted live by growers.</p>
+                <a href="{% url 'marketplace' %}" class="btn btn-outline-success fw-bold px-4 mt-auto align-self-start">Go To Marketplace <i class="fa-solid fa-arrow-right ms-2"></i></a>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+    <div class="card border-0 shadow-sm p-4 rounded-4 h-100 bg-white">
+        <div class="d-flex align-items-center mb-3">
+            <div class="bg-warning text-dark rounded-3 p-3 me-3 fs-3">
+                <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div>
+                <h4 class="fw-bold text-dark mb-0">Government Schemes</h4>
+                <p class="text-muted mb-0">Subsidies, grants, and support campaigns.</p>
+            </div>
+        </div>
+        <p class="text-secondary">Explore financial support plans and crop insurance setups specifically structured for active farms.</p>
+        <a href="{% url 'schemes' %}" class="btn btn-outline-warning text-dark fw-bold px-4 mt-auto align-self-start">
+            Explore Schemes <i class="fa-solid fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+</div>
+    </div>
+
+{% endblock %}

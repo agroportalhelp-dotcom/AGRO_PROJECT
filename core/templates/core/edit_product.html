@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %}
+{% block title %}Edit Product | AGRO Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+            <div class="card-header bg-success text-white py-3">
+                <h4 class="fw-bold mb-0">
+                    <i class="fa-solid fa-pen-to-square me-2"></i>Edit Product Listing
+                </h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Editable Seller / Farmer Name -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Seller / Farmer Name</label>
+                        <input type="text" name="seller_name" class="form-control" value="{{ product.seller_name|default:product.get_seller_name }}" placeholder="Enter seller or business name">
+                    </div>
+
+                    <!-- Title -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Product Title</label>
+                        <input type="text" name="title" value="{{ product.title }}" class="form-control" required>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Description</label>
+                        <textarea name="description" class="form-control" rows="3" required>{{ product.description }}</textarea>
+                    </div>
+
+                    <!-- Price, Unit & Quantity -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Price (₹)</label>
+                            <input type="number" step="0.01" name="price" value="{{ product.price }}" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Rate Unit</label>
+                            <select name="unit" class="form-select">
+                                <option value="kg" {% if product.unit == 'kg' %}selected{% endif %}>per KG</option>
+                                <option value="gram" {% if product.unit == 'gram' %}selected{% endif %}>per Gram</option>
+                                <option value="quintal" {% if product.unit == 'quintal' %}selected{% endif %}>per Quintal</option>
+                                <option value="ton" {% if product.unit == 'ton' %}selected{% endif %}>per Ton</option>
+                                <option value="piece" {% if product.unit == 'piece' %}selected{% endif %}>per Piece</option>
+                                <option value="pack" {% if product.unit == 'pack' %}selected{% endif %}>per Pack</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Quantity Available</label>
+                            <input type="text" name="quantity" value="{{ product.quantity }}" class="form-control" placeholder="e.g. 50" required>
+                        </div>
+                    </div>
+
+                    <!-- Contact Details -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Contact Number</label>
+                            <input type="tel" name="contact_number" value="{{ product.contact_number|default:'' }}" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">WhatsApp Number</label>
+                            <input type="tel" name="whatsapp_number" value="{{ product.whatsapp_number|default:'' }}" class="form-control">
+                        </div>
+                    </div>
+
+                    <!-- Existing Gallery Images -->
+                    {% if product.images.all or product.product_image %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold d-block">Current Product Images</label>
+                            <div class="d-flex gap-2 flex-wrap">
+                                {% if product.product_image %}
+                                    <div class="position-relative border rounded p-1">
+                                        <img src="{{ product.product_image.url }}" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
+                                        <span class="badge bg-primary position-absolute top-0 start-0 m-1" style="font-size: 0.65rem;">Cover</span>
+                                    </div>
+                                {% endif %}
+                                {% for img in product.images.all %}
+                                    <div class="position-relative border rounded p-1">
+                                        <img src="{{ img.image.url }}" class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
+                                        <a href="{% url 'delete_product_image' img.id %}" class="btn btn-danger btn-sm position-absolute top-0 end-0 p-0 d-flex align-items-center justify-content-center rounded-circle" style="width: 22px; height: 22px; margin: 2px;" onclick="return confirm('Delete this image?');">
+                                            <i class="fa-solid fa-xmark" style="font-size: 10px;"></i>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Upload Additional Images -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Add Product Images (Multiple Allowed)</label>
+                        <input type="file" name="images" class="form-control" accept="image/*" multiple>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'marketplace' %}" class="btn btn-secondary px-4 fw-bold">Cancel</a>
+                        <button type="submit" class="btn btn-success flex-grow-1 fw-bold py-2">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

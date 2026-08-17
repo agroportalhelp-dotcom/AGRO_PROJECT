@@ -1,0 +1,103 @@
+{% extends 'core/base.html' %}
+{% block title %}Add New Crop | AGRO Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+            <h3 class="fw-bold text-success mb-3">
+                <i class="fa-solid fa-seedling me-2"></i>Register Sown Crop
+            </h3>
+            
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Category</label>
+                    {{ form.category }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Crop Name</label>
+                    {{ form.crop_name }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Sowing Date</label>
+                    {{ form.sowing_date }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Estimated Yield</label>
+                    {{ form.estimated_yield }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Field Size</label>
+                    {{ form.field_size }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Crop Image</label>
+                    {{ form.image }}
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 fw-bold py-2 mt-3">
+                    Register Field Crop
+                </button>
+            </form>
+            
+        </div>
+    </div>
+</div>
+
+<!-- DYNAMIC DROPDOWN FILTERING SCRIPT -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const categorySelect = document.getElementById("id_category");
+        const cropSelect = document.getElementById("id_crop_name");
+
+        // Map categories to allowed crop values
+        const categoryMapping = {
+            'Cereals': ['Wheat', 'Rice', 'Maize', 'Barley', 'Bajra'],
+            'Pulses': ['Chickpea', 'Pigeon Pea', 'Lentils', 'Moong'],
+            'Vegetables': ['Tomato', 'Potato', 'Onion', 'Brinjal', 'Cauliflower'],
+            'Fruits': ['Banana', 'Mango', 'Apple', 'Pomegranate'],
+            'Oilseeds': ['Mustard', 'Soybean'],
+            'Cash Crops': ['Cotton', 'Sugarcane']
+        };
+
+        const originalOptions = Array.from(cropSelect.options);
+
+        categorySelect.addEventListener("change", function () {
+            const selectedCategory = this.value;
+
+            // Clear crop dropdown options
+            cropSelect.innerHTML = "";
+
+            // Always add default option first
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.text = "-- Select Crop Name --";
+            cropSelect.appendChild(defaultOption);
+
+            if (selectedCategory && categoryMapping[selectedCategory]) {
+                const allowedCrops = categoryMapping[selectedCategory];
+
+                originalOptions.forEach(opt => {
+                    if (allowedCrops.includes(opt.value)) {
+                        cropSelect.appendChild(opt.cloneNode(true));
+                    }
+                });
+            } else {
+                // If no category selected, show all options
+                originalOptions.forEach(opt => {
+                    if (opt.value !== "") {
+                        cropSelect.appendChild(opt.cloneNode(true));
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

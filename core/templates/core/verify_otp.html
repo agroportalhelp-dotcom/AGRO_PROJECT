@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+{% block title %}Verify Phone | AGRO Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-card {
+        border: none;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+    }
+    .auth-header-accent {
+        background: linear-gradient(135deg, #114b29 0%, #1c6d3c 100%);
+        padding: 40px 20px;
+        color: #ffffff;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-5">
+    <div class="col-lg-5 col-md-7 col-sm-10">
+        <div class="card auth-card">
+            <div class="auth-header-accent">
+                <div class="mb-2">
+                    <span class="p-3 bg-white bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fa-solid fa-mobile-screen fs-3 text-warning"></i>
+                    </span>
+                </div>
+                <h3 class="fw-bold mb-1">Phone Verification</h3>
+                <p class="mb-0 text-white-50 small">Enter the 6-digit verification code sent to {{ phone_number }}</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="otp" class="form-label small fw-bold text-secondary">One-Time Password (OTP)</label>
+                        <input 
+    type="text" 
+    name="otp" 
+    id="otp" 
+    inputmode="numeric" 
+    pattern="[0-9]{6}" 
+    class="form-control text-center fs-4 font-monospace" 
+    placeholder="123456" 
+    maxlength="6" 
+    autocomplete="one-time-code" 
+    required>
+                        <div class="form-text text-center mt-2 text-warning">Note: View your GMAIL to access this OTP code.</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 py-3 fw-bold rounded-3">
+                        Verify & Activate Account <i class="fa-solid fa-square-check ms-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

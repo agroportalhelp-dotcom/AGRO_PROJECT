@@ -1,0 +1,119 @@
+{% extends 'core/base.html' %}
+{% block title %}Login | AGRO Portal{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-card {
+        border: none;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.03);
+        overflow: hidden;
+    }
+    .auth-header-accent {
+        background: linear-gradient(135deg, #114b29 0%, #1c6d3c 100%);
+        padding: 40px 20px;
+        color: #ffffff;
+        text-align: center;
+    }
+    .btn-login {
+        background: linear-gradient(135deg, #198754 0%, #145a32 100%);
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 700;
+        transition: transform 0.1s ease;
+    }
+    .btn-login:active {
+        transform: scale(0.98);
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-right: none;
+        color: #6c757d;
+    }
+    .input-group .form-control {
+        border-left: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-5">
+    <div class="col-lg-5 col-md-7 col-sm-10">
+        <div class="card auth-card">
+            <div class="auth-header-accent">
+                <div class="mb-2">
+                    <span class="p-3 bg-white bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fa-solid fa-unlock-keyhole fs-3 text-warning"></i>
+                    </span>
+                </div>
+                <h3 class="fw-bold mb-1">Welcome Back</h3>
+                <p class="mb-0 text-white-50 small">Access your AGRO Portal database dashboard</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                {% if form.errors %}
+                    <div class="alert alert-danger py-2 small" role="alert">
+                        <i class="fa-solid fa-circle-exclamation me-2"></i> Invalid username or password.
+                    </div>
+                {% endif %}
+
+                <form method="POST" autocomplete="off">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label for="id_username" class="form-label small fw-bold text-secondary">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-regular fa-user"></i></span>
+                            <input type="text" name="username" id="id_username" class="form-control" placeholder="Enter your username" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label for="id_password" class="form-label small fw-bold text-secondary mb-0">Password</label>
+                            <a href="{% url 'forgot_password_request' %}" class="small text-success text-decoration-none fw-bold">Forgot Password?</a>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" name="password" id="id_password" class="form-control" placeholder="••••••••" required>
+                            <button type="button" class="btn btn-outline-secondary" id="password-toggle">
+                                <i class="fa-regular fa-eye" id="toggle-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-login btn-success w-100 text-white shadow-sm mt-3 py-3">
+                        Sign In <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
+                    </button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <p class="text-muted small mb-0">New to the community? <a href="{% url 'register' %}" class="text-success fw-bold text-decoration-none">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const passwordToggle = document.getElementById('password-toggle');
+    const passwordInput = document.getElementById('id_password');
+    const toggleIcon = document.getElementById('toggle-icon');
+
+    if (passwordToggle && passwordInput) {
+        passwordToggle.addEventListener('click', function () {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    }
+</script>
+{% endblock %}

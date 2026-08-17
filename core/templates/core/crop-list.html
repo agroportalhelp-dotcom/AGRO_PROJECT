@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% block title %}My Registered Crops | AGRO Portal{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-success"><i class="fa-solid fa-wheat-awn me-2"></i>My Registered Crops</h2>
+    <a href="{% url 'add_crop' %}" class="btn btn-success px-4">+ Add New Crop</a>
+</div>
+
+<div class="row g-4">
+    {% for crop in crops %}
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
+                
+                <!-- CROP IMAGE DISPLAY -->
+                {% if crop.image %}
+                    <img src="{{ crop.image.url }}" alt="{{ crop.crop_name }}" class="card-img-top" style="height: 220px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                        <i class="fa-solid fa-seedling fa-3x text-success opacity-50"></i>
+                    </div>
+                {% endif %}
+
+                <div class="card-body p-4">
+                    <h4 class="fw-bold text-dark mb-1">{{ crop.crop_name }}</h4>
+                    {% if crop.category %}
+                        <span class="badge bg-success mb-3">{{ crop.category }}</span>
+                    {% endif %}
+                    
+                    <p class="text-muted mb-2">📅 <strong>Sowing Date:</strong> {{ crop.sowing_date }}</p>
+                    {% if crop.estimated_yield %}
+                        <p class="text-muted mb-2">🌾 <strong>Expected Yield:</strong> {{ crop.estimated_yield }}</p>
+                    {% endif %}
+                    {% if crop.field_size %}
+                        <p class="text-muted mb-0">📐 <strong>Field Size:</strong> {{ crop.field_size }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted fs-5">No crops registered yet. Click "+ Add New Crop" to register your first crop.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+{% block title %}Contact Portal | AGRO Portal{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4 border-0 shadow-sm rounded-4 text-center bg-white">
+            <h2 class="fw-bold text-success mb-3"><i class="fa-solid fa-headset me-2"></i>AGRO Project Helpdesk</h2>
+            <p class="text-muted">Need any assistance setting up your soil report or posting a product?</p>
+            <hr>
+            <p class="fs-5 fw-bold mb-1">Email Support:</p>
+            <p class="text-primary mb-4">Agroportal.help@gmail.com</p>
+            <p class="fs-5 fw-bold mb-1">Administrative Office:</p>
+            <p class="text-secondary mb-3">Agricultural Informatics Dept, India</p>
+            <a href="{% url 'index' %}" class="btn btn-success px-4">Back to Homepage</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

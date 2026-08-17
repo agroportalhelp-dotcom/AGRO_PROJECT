@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% block title %}Active Schemes | AGRO Portal{% endblock %}
+{% block content %}
+<h2 class="fw-bold text-success mb-4"><i class="fa-solid fa-landmark me-2"></i>Active Government & Regional Schemes</h2>
+<div class="row g-4">
+    {% for scheme in schemes %}
+        <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm rounded-4 p-4 bg-white">
+                <h4 class="fw-bold text-success mb-2">{{ scheme.title }}</h4>
+                <p class="text-muted">{{ scheme.description }}</p>
+                <hr>
+                <p class="mb-1"><strong>🎯 Eligibility Criteria:</strong></p>
+                <p class="text-secondary small">{{ scheme.eligibility }}</p>
+                <p class="mb-1"><strong>💰 Financial Benefits:</strong></p>
+                <p class="text-secondary small">{{ scheme.benefits }}</p>
+                {% if scheme.link %}
+    <a href="{{ scheme.link }}" target="_blank" rel="noopener noreferrer" class="btn btn-success w-100 mt-3">Apply Directly Here</a>
+{% endif %}
+        </div>
+    {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted fs-5">No schemes listed currently. Check back soon for regional updates!</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

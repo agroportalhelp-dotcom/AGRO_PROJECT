@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+{% block title %}Home | AGRO Portal{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Hero Section -->
+    <div class="p-5 mb-4 bg-light rounded-3 border text-center">
+        <h1 class="display-5 fw-bold text-success">Welcome to AGRO Portal</h1>
+        <p class="fs-5 text-muted">Connecting local farmers directly to the marketplace and offering smart crop metrics.</p>
+        {% if user.is_authenticated %}
+            <!-- Redirect logged-in users to their actual dashboard -->
+            <a href="{% url 'dashboard' %}" class="btn btn-success btn-lg px-4 fw-bold">Go to Farmer Dashboard 🚜</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-success btn-lg px-4 me-2">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-outline-success btn-lg px-4">Register</a>
+        {% endif %}
+    </div>
+
+    <!-- Live Admin Updates News Ticker -->
+    <div class="card border-success mb-4 shadow-sm">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">📢 Latest Portal Updates</h4>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for update in updates %}
+                    <li class="list-group-item py-3">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="mb-1 fw-bold text-dark">{{ update.title }}</h5>
+                            <small class="text-muted">{{ update.created_at|date:"d M Y" }}</small>
+                        </div>
+                        <p class="mb-0 text-secondary">{{ update.content }}</p>
+                    </li>
+                {% empty %}
+                    <p class="text-muted text-center my-3">No updates available at the moment.</p>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

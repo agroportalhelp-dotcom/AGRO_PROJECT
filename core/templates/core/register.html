@@ -1,0 +1,143 @@
+{% extends 'core/base.html' %}
+{% block title %}Create Farmer Account | AGRO Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center my-4">
+    <div class="col-lg-6 col-md-8">
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+            <div class="p-4 text-center bg-success text-white">
+                <h3 class="fw-bold mb-1">Create Farmer Account</h3>
+                <p class="mb-0 text-white-50 small">Join our direct farm network</p>
+            </div>
+
+            <div class="card-body p-4 p-md-5">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Full Name</label>
+                        <input type="text" name="full_name" class="form-control" placeholder="e.g. Pravin Kumar" required>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-secondary">Username</label>
+                            <input type="text" name="username" class="form-control" placeholder="Unique username" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold small text-secondary">Email (For Gmail OTP)</label>
+                            <input type="email" name="email" class="form-control" placeholder="name@gmail.com" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">Mobile Number</label>
+                        <input type="text" name="phone" class="form-control" placeholder="10-digit mobile number" required>
+                    </div>
+
+                    <!-- REAL LOCATION CASCADE DROPDOWNS -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">State</label>
+                        <select id="stateSelect" name="state" class="form-select" required onchange="loadDistricts()">
+                            <option value="">Select State</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">District</label>
+                        <select id="districtSelect" name="district" class="form-select" required onchange="loadCities()">
+                            <option value="">Select State First</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-secondary">City / Town / Village</label>
+                        <select id="citySelect" name="city" class="form-select" required>
+                            <option value="">Select District First</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-secondary">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 py-3 fw-bold rounded-3">
+                        Register Profile & Send Gmail OTP <i class="fa-solid fa-envelope ms-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- REAL INDIAN LOCATION DATA CASCADE SCRIPT -->
+<script>
+    const indiaData = {
+        "Maharashtra": {
+            "Pune": ["Pune City", "Haveli", "Baramati", "Shirur", "Junnar", "Khed"],
+            "Nagpur": ["Nagpur City", "Kamptee", "Hingna", "Katol", "Savner", "Umred"],
+            "Nashik": ["Nashik City", "Malegaon", "Sinnar", "Niphad", "Igatpuri"],
+            "Mumbai Suburban": ["Andheri", "Borivali", "Kurla"],
+            "Thane": ["Thane City", "Kalyan", "Bhiwandi", "Ulhasnagar"]
+        },
+        "Uttar Pradesh": {
+            "Lucknow": ["Lucknow City", "Malihabad", "Bakshi Ka Talab", "Mohanlalganj"],
+            "Kanpur Nagar": ["Kanpur City", "Ghatampur", "Bilhauz"],
+            "Varanasi": ["Varanasi City", "Pindra", "Panchkoshi"]
+        },
+        "Gujarat": {
+            "Ahmedabad": ["Ahmedabad City", "Daskroi", "Sanand", "Dholka"],
+            "Surat": ["Surat City", "Choryasi", "Kamrej", "Olpad"],
+            "Vadodara": ["Vadodara City", "Padra", "Dabhoi"]
+        },
+        "Punjab": {
+            "Ludhiana": ["Ludhiana City", "Jagraon", "Khanna", "Samrala"],
+            "Amritsar": ["Amritsar City", "Ajnala", "Baba Bakala"]
+        }
+    };
+
+    const stateSelect = document.getElementById("stateSelect");
+    const districtSelect = document.getElementById("districtSelect");
+    const citySelect = document.getElementById("citySelect");
+
+    window.addEventListener('DOMContentLoaded', () => {
+        for (let state in indiaData) {
+            let opt = document.createElement("option");
+            opt.value = state;
+            opt.textContent = state;
+            stateSelect.appendChild(opt);
+        }
+    });
+
+    function loadDistricts() {
+        districtSelect.innerHTML = '<option value="">Select District</option>';
+        citySelect.innerHTML = '<option value="">Select District First</option>';
+        const selectedState = stateSelect.value;
+        
+        if (selectedState && indiaData[selectedState]) {
+            for (let district in indiaData[selectedState]) {
+                let opt = document.createElement("option");
+                opt.value = district;
+                opt.textContent = district;
+                districtSelect.appendChild(opt);
+            }
+        }
+    }
+
+    function loadCities() {
+        citySelect.innerHTML = '<option value="">Select City/Village</option>';
+        const selectedState = stateSelect.value;
+        const selectedDistrict = districtSelect.value;
+
+        if (selectedState && selectedDistrict && indiaData[selectedState][selectedDistrict]) {
+            indiaData[selectedState][selectedDistrict].forEach(city => {
+                let opt = document.createElement("option");
+                opt.value = city;
+                opt.textContent = city;
+                citySelect.appendChild(opt);
+            });
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+{% block title %}My Profile | AGRO Portal{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+            <h3 class="fw-bold text-success mb-3"><i class="fa-solid fa-id-card me-2"></i>My Profile & Preferences</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <h5 class="fw-bold mt-4 text-secondary">Account Details</h5>
+                {{ u_form.as_p }}
+                <hr>
+                <h5 class="fw-bold mt-4 text-secondary">Farm Info & Helpful Resources</h5>
+                {{ p_form.as_p }}
+                
+                {% if user.profile.helpful_website_url %}
+                    <div class="alert alert-success mt-3 py-2 d-flex align-items-center justify-content-between">
+                        <div>
+                            <i class="fa-solid fa-arrow-up-right-from-square me-2"></i>
+                            <strong>Saved Resource:</strong> {{ user.profile.helpful_website_title|default:"Helpful Portal" }}
+                        </div>
+                        <a href="{{ user.profile.helpful_website_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success fw-bold">
+                            Visit Site <i class="fa-solid fa-external-link ms-1"></i>
+                        </a>
+                    </div>
+                {% endif %}
+                
+                <button type="submit" class="btn btn-success w-100 fw-bold py-2 mt-4">Save Profile Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

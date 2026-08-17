@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+{% block title %}Add Product | AGRO Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+            <div class="card-header bg-success text-white py-3">
+                <h4 class="fw-bold mb-0">
+                    <i class="fa-solid fa-plus-circle me-2"></i>List New Product
+                </h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Custom Seller Name Input -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Seller / Farmer Name</label>
+                        <input type="text" name="seller_name" class="form-control" value="{{ seller_name|default:'' }}" placeholder="Enter seller or business name (optional)">
+                        <div class="form-text">Leave blank to use your account name by default.</div>
+                    </div>
+
+                    <!-- Product Title -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Product Title *</label>
+                        <input type="text" name="title" value="{{ title|default:'' }}" class="form-control" placeholder="e.g. Fresh Organic Tomatoes" required>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Description</label>
+                        <textarea name="description" class="form-control" rows="3" placeholder="Provide product details...">{{ description|default:'' }}</textarea>
+                    </div>
+
+                    <!-- Price, Unit & Quantity -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Price (₹) *</label>
+                            <input type="number" step="0.01" name="price" value="{{ price|default:'' }}" class="form-control" placeholder="0.00" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Rate Unit</label>
+                            <select name="unit" class="form-select">
+                                <option value="kg">per KG</option>
+                                <option value="gram">per Gram</option>
+                                <option value="quintal">per Quintal</option>
+                                <option value="ton">per Ton</option>
+                                <option value="piece">per Piece</option>
+                                <option value="pack">per Pack</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Stock Quantity *</label>
+                            <input type="text" name="quantity" value="{{ quantity|default:'' }}" class="form-control" placeholder="e.g. 50 kg" required>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Contact Number *</label>
+                            <input type="tel" name="contact_number" value="{{ contact_number|default:'' }}" class="form-control" placeholder="Phone number" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">WhatsApp Number</label>
+                            <input type="tel" name="whatsapp_number" value="{{ whatsapp_number|default:'' }}" class="form-control" placeholder="WhatsApp number">
+                        </div>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Product Images</label>
+                        <input type="file" name="images" class="form-control" accept="image/*" multiple>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'marketplace' %}" class="btn btn-secondary px-4 fw-bold">Cancel</a>
+                        <button type="submit" class="btn btn-success flex-grow-1 fw-bold py-2">Publish Listing</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
