@@ -20,6 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',  # Must be placed before 'cloudinary'
+    'cloudinary',
     'core',
     'anymail',  
 ]
@@ -81,8 +83,9 @@ STATICFILES_DIRS = [path for path in [BASE_DIR / "static"] if path.exists()]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -103,3 +106,9 @@ ANYMAIL = {
     "BREVO_API_KEY": os.environ.get("BREVO_API_KEY", ""),
 }
 DEFAULT_FROM_EMAIL = "agroportal.help@gmail.com"
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('wklqloab'),
+    'API_KEY': os.environ.get('467649131937914'),
+    'API_SECRET': os.environ.get('drzvJ1NZeR3EQh5Hz3VfVJ6NTUQ'),
+}
