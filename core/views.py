@@ -237,11 +237,8 @@ def add_product_view(request):
         quantity = request.POST.get('quantity', '').strip()
         contact_number = request.POST.get('contact_number', '').strip()
         whatsapp_number = request.POST.get('whatsapp_number', '').strip()
-        uploaded_images = request.FILES.getlist('images')
 
-        primary_image = request.FILES.get('product_image')
-        if not uploaded_images and primary_image:
-            uploaded_images = [primary_image]
+        uploaded_images = request.FILES.getlist('images')
 
         if not title or not price or not quantity or not contact_number:
             messages.error(request, "Please fill in all required fields.")
@@ -257,6 +254,7 @@ def add_product_view(request):
             })
 
         try:
+            # Create product without uploading the image yet
             product = Product.objects.create(
                 farmer=request.user,
                 seller_name=seller_name,
@@ -267,11 +265,21 @@ def add_product_view(request):
                 quantity=quantity,
                 contact_number=contact_number,
                 whatsapp_number=whatsapp_number,
-                product_image=uploaded_images[0] if uploaded_images else None
             )
 
+            # Upload images to Cloudinary
             for img in uploaded_images:
-                ProductImage.objects.create(product=product, image=img)
+                ProductImage.objects.create(
+                    product=product,
+                    image=img
+                )
+
+            # Use the first gallery image as the main product image
+            if uploaded_images:
+                first_image = product.images.first()
+                if first_image:
+                    product.product_image = first_image.image
+                    product.save()
 
             messages.success(request, "Product listed in marketplace successfully!")
             return redirect('marketplace')
