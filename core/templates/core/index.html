@@ -1,178 +1,1771 @@
 {% extends 'core/base.html' %}
 {% load static %}
 
-{% block title %}AGRO Portal | Home{% endblock %}
+{% block title %}AGRO Portal | Smart Agriculture Platform{% endblock %}
 
 {% block extra_css %}
+
 <style>
-    .banner-img {
+
+/* =========================================================
+   GLOBAL HOME PAGE
+========================================================= */
+
+:root {
+    --agro-green: #198754;
+    --agro-dark: #073b2a;
+    --agro-light: #f4f8f5;
+    --agro-card: #ffffff;
+    --agro-text: #17221d;
+    --agro-muted: #6c757d;
+    --agro-border: #dcebe2;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.home-page {
+    transition:
+        background-color 0.35s ease,
+        color 0.35s ease;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+body.dark-mode {
+    background-color: #0d1511 !important;
+    color: #e8f1eb;
+}
+
+body.dark-mode .home-page {
+    color: #e8f1eb;
+}
+
+body.dark-mode .section-heading h2,
+body.dark-mode .quick-card h5,
+body.dark-mode .portal-card h4 {
+    color: #e8f1eb !important;
+}
+
+body.dark-mode .section-heading p,
+body.dark-mode .quick-card p,
+body.dark-mode .portal-card p {
+    color: #aebdb4 !important;
+}
+
+body.dark-mode .quick-card,
+body.dark-mode .portal-card,
+body.dark-mode .news-card,
+body.dark-mode .stat-card {
+    background: #16221b !important;
+    border-color: #294136 !important;
+    color: #e8f1eb;
+}
+
+body.dark-mode .news-item {
+    border-color: #294136;
+}
+
+body.dark-mode .news-item:hover {
+    background: #1b2b22;
+}
+
+body.dark-mode .news-title {
+    color: #63d391;
+}
+
+body.dark-mode .news-date {
+    color: #91a198;
+}
+
+body.dark-mode .portal-card .text-muted,
+body.dark-mode .quick-card .text-muted {
+    color: #aebdb4 !important;
+}
+
+body.dark-mode .portal-card .text-secondary {
+    color: #b6c5bc !important;
+}
+
+body.dark-mode .hero-secondary-btn {
+    border-color: rgba(255,255,255,0.35);
+}
+
+body.dark-mode .theme-toggle {
+    background: #21372a;
+    color: #ffd45a;
+    border-color: #365442;
+}
+
+
+/* =========================================================
+   THEME TOGGLE
+========================================================= */
+
+.theme-toggle {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    border: 1px solid #d5e4db;
+
+    background: #f4f8f5;
+
+    color: #198754;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.05rem;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease;
+}
+
+.theme-toggle:hover {
+    transform: rotate(15deg) scale(1.08);
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.agro-hero {
+    position: relative;
+    overflow: hidden;
+
+    border-radius: 28px;
+
+    min-height: 500px;
+
+    padding: 60px 48px;
+
+    margin-bottom: 65px;
+
+    background:
+        linear-gradient(
+            115deg,
+            rgba(4, 55, 37, 0.97),
+            rgba(18, 105, 61, 0.88)
+        );
+
+    box-shadow:
+        0 22px 55px rgba(5, 60, 38, 0.20);
+}
+
+
+/* Decorative circles */
+
+.hero-circle {
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    opacity: 0.14;
+}
+
+.hero-circle-one {
+    width: 330px;
+    height: 330px;
+
+    background: #a9edc0;
+
+    right: -120px;
+    top: -130px;
+}
+
+.hero-circle-two {
+    width: 210px;
+    height: 210px;
+
+    background: white;
+
+    left: -90px;
+    bottom: -100px;
+}
+
+
+/* Floating elements */
+
+.floating-leaf {
+    position: absolute;
+
+    color: rgba(255,255,255,0.20);
+
+    pointer-events: none;
+
+    animation:
+        floatingLeaf 5s ease-in-out infinite;
+}
+
+.leaf-one {
+    right: 44%;
+    top: 8%;
+
+    font-size: 4rem;
+}
+
+.leaf-two {
+    right: 7%;
+    bottom: 12%;
+
+    font-size: 3rem;
+
+    animation-delay: 1.4s;
+}
+
+.leaf-three {
+    left: 45%;
+    bottom: 5%;
+
+    font-size: 2.5rem;
+
+    animation-delay: 2.2s;
+}
+
+@keyframes floatingLeaf {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+
+    50% {
+        transform:
+            translateY(-16px)
+            rotate(8deg);
+    }
+
+}
+
+
+/* Hero content */
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+
+    animation:
+        heroTextIn 0.8s ease forwards;
+}
+
+@keyframes heroTextIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+.hero-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 16px;
+
+    border-radius: 50px;
+
+    background: rgba(255,255,255,0.13);
+
+    border: 1px solid rgba(255,255,255,0.22);
+
+    color: #d9f8e5;
+
+    font-size: 0.78rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+
+    backdrop-filter: blur(10px);
+}
+
+
+.hero-title {
+    font-size: clamp(2.3rem, 5vw, 4.1rem);
+
+    line-height: 1.08;
+
+    font-weight: 800;
+
+    color: white;
+
+    margin-top: 22px;
+
+    margin-bottom: 20px;
+
+    letter-spacing: -1.5px;
+}
+
+.hero-title span {
+    color: #9ce5b5;
+}
+
+
+.hero-description {
+    max-width: 650px;
+
+    color: rgba(255,255,255,0.84);
+
+    font-size: 1.08rem;
+
+    line-height: 1.75;
+}
+
+
+.hero-buttons {
+    margin-top: 30px;
+}
+
+
+.hero-primary-btn {
+    background: #ffc107;
+
+    color: #17221d;
+
+    border: none;
+
+    padding: 13px 25px;
+
+    border-radius: 11px;
+
+    font-weight: 800;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.15);
+
+    transition: all 0.3s ease;
+}
+
+.hero-primary-btn:hover {
+    background: #ffca2c;
+
+    color: #17221d;
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 16px 30px rgba(0,0,0,0.23);
+}
+
+
+.hero-secondary-btn {
+    border: 1px solid rgba(255,255,255,0.45);
+
+    color: white;
+
+    padding: 12px 23px;
+
+    border-radius: 11px;
+
+    font-weight: 700;
+
+    backdrop-filter: blur(6px);
+
+    transition: all 0.3s ease;
+}
+
+.hero-secondary-btn:hover {
+    background: white;
+
+    color: #0b3d2e;
+
+    transform: translateY(-4px);
+}
+
+
+/* =========================================================
+   HERO IMAGE
+   NO CROPPING
+========================================================= */
+
+.hero-image-wrapper {
+    position: relative;
+
+    z-index: 3;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    animation:
+        heroImageIn 1s ease forwards;
+}
+
+.hero-image {
+    width: 100%;
+
+    max-width: 600px;
+
+    max-height: 370px;
+
+    height: auto;
+
+    object-fit: contain;
+
+    display: block;
+
+    border-radius: 22px;
+
+    border: 5px solid rgba(255,255,255,0.18);
+
+    background: rgba(255,255,255,0.05);
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.25);
+
+    transition:
+        transform 0.5s ease,
+        box-shadow 0.5s ease;
+}
+
+.hero-image:hover {
+    transform: scale(1.025);
+
+    box-shadow:
+        0 25px 55px rgba(0,0,0,0.32);
+}
+
+@keyframes heroImageIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateX(45px)
+            scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   SECTION HEADINGS
+========================================================= */
+
+.home-section {
+    margin-bottom: 70px;
+}
+
+.section-heading {
+    margin-bottom: 30px;
+}
+
+.section-heading h2 {
+    font-weight: 800;
+
+    color: #0b3d2e;
+
+    margin-bottom: 7px;
+}
+
+.section-heading p {
+    color: #6b756f;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.stat-card {
+    background: white;
+
+    border:
+        1px solid var(--agro-border);
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+    height: 100%;
+
+    text-align: center;
+
+    box-shadow:
+        0 7px 25px rgba(15,65,40,0.05);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 17px 38px rgba(15,65,40,0.12);
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin:
+        0 auto 12px;
+
+    border-radius: 15px;
+
+    font-size: 1.3rem;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+
+    font-weight: 800;
+
+    color: #198754;
+}
+
+.stat-label {
+    color: #6c757d;
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   QUICK CARDS
+========================================================= */
+
+.quick-card {
+    position: relative;
+
+    overflow: hidden;
+
+    background: white;
+
+    border:
+        1px solid var(--agro-border);
+
+    border-radius: 19px;
+
+    padding: 28px 23px;
+
+    height: 100%;
+
+    box-shadow:
+        0 7px 25px rgba(15,65,40,0.05);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.quick-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 80px;
+    height: 80px;
+
+    border-radius: 50%;
+
+    background: rgba(25,135,84,0.05);
+
+    right: -30px;
+    top: -30px;
+
+    transition: transform 0.4s ease;
+}
+
+.quick-card:hover::before {
+    transform: scale(2);
+}
+
+.quick-card:hover {
+    transform: translateY(-9px);
+
+    border-color: #9ed6b6;
+
+    box-shadow:
+        0 18px 40px rgba(15,65,40,0.12);
+}
+
+.quick-icon {
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    font-size: 1.55rem;
+
+    margin-bottom: 20px;
+
+    position: relative;
+
+    z-index: 1;
+
+    transition:
+        transform 0.3s ease;
+}
+
+.quick-card:hover .quick-icon {
+    transform:
+        scale(1.1)
+        rotate(-4deg);
+}
+
+.quick-card h5 {
+    font-weight: 800;
+
+    color: #17221d;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+.quick-card p {
+    min-height: 48px;
+
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   NEWS
+========================================================= */
+
+.news-card {
+    overflow: hidden;
+
+    border-radius: 21px;
+
+    border:
+        1px solid var(--agro-border);
+
+    box-shadow:
+        0 8px 28px rgba(15,65,40,0.06);
+}
+
+.news-header {
+    background:
+        linear-gradient(
+            135deg,
+            #0b3d2e,
+            #198754
+        );
+
+    color: white;
+
+    padding: 20px 23px;
+}
+
+.news-item {
+    padding: 20px 23px;
+
+    border-bottom:
+        1px solid #edf2ef;
+
+    transition:
+        background 0.25s ease,
+        padding-left 0.25s ease;
+}
+
+.news-item:last-child {
+    border-bottom: none;
+}
+
+.news-item:hover {
+    background: #f5fbf7;
+
+    padding-left: 28px;
+}
+
+.news-title {
+    color: #198754;
+
+    font-weight: 800;
+}
+
+.news-date {
+    color: #89948e;
+
+    font-size: 0.82rem;
+}
+
+
+/* =========================================================
+   PORTALS
+========================================================= */
+
+.portal-card {
+    position: relative;
+
+    overflow: hidden;
+
+    height: 100%;
+
+    background: white;
+
+    border:
+        1px solid var(--agro-border);
+
+    border-radius: 21px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 8px 28px rgba(15,65,40,0.05);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.portal-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow:
+        0 18px 40px rgba(15,65,40,0.11);
+}
+
+.portal-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 17px;
+
+    font-size: 1.65rem;
+
+    margin-bottom: 20px;
+
+    transition:
+        transform 0.35s ease;
+}
+
+.portal-card:hover .portal-icon {
+    transform:
+        scale(1.08)
+        rotate(3deg);
+}
+
+.portal-card h4 {
+    font-weight: 800;
+
+    color: #17221d;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.final-cta {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #073b2a,
+            #198754
+        );
+
+    border-radius: 25px;
+
+    padding: 55px 35px;
+
+    color: white;
+
+    box-shadow:
+        0 18px 45px rgba(5,60,38,0.18);
+
+    margin-bottom: 20px;
+}
+
+.final-cta::before,
+.final-cta::after {
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.07);
+}
+
+.final-cta::before {
+    width: 250px;
+    height: 250px;
+
+    right: -80px;
+    top: -130px;
+}
+
+.final-cta::after {
+    width: 180px;
+    height: 180px;
+
+    left: -70px;
+    bottom: -100px;
+}
+
+.final-cta h2 {
+    font-weight: 800;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.final-cta p {
+    color: rgba(255,255,255,0.78);
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   REVEAL ANIMATION
+========================================================= */
+
+.reveal {
+    opacity: 0;
+
+    transform:
+        translateY(25px);
+
+    animation:
+        revealAnimation 0.75s ease forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.12s;
+}
+
+.delay-2 {
+    animation-delay: 0.24s;
+}
+
+.delay-3 {
+    animation-delay: 0.36s;
+}
+
+.delay-4 {
+    animation-delay: 0.48s;
+}
+
+@keyframes revealAnimation {
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 991px) {
+
+    .agro-hero {
+        padding: 45px 28px;
+    }
+
+    .hero-image {
+        max-height: 330px;
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .agro-hero {
+        padding: 35px 20px;
+
+        border-radius: 20px;
+    }
+
+    .hero-title {
+        font-size: 2.25rem;
+    }
+
+    .hero-description {
+        font-size: 0.96rem;
+    }
+
+    .hero-image {
+        max-height: 250px;
+
+        border-width: 3px;
+    }
+
+    .hero-buttons .btn {
         width: 100%;
-        max-height: 380px;
-        object-fit: cover;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-        border: 4px solid rgba(255, 255, 255, 0.25);
+
+        margin-bottom: 10px;
     }
-    .action-card {
-        border: none;
-        border-radius: 16px;
-        background: white;
-        transition: transform 0.2s, box-shadow 0.2s;
+
+    .final-cta {
+        padding: 42px 20px;
     }
-    .action-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-    }
-    .icon-square {
-        width: 65px;
-        height: 65px;
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-    }
+
+}
+
 </style>
+
 {% endblock %}
+
 
 {% block content %}
 
-    <!-- GREEN AGRI BACKGROUND WITH BANNER -->
-    <div class="agri-banner-bg mb-5 text-center text-white">
-        <div class="row align-items-center g-4">
-            <div class="col-lg-6 text-lg-start px-4">
-                <span class="badge bg-warning text-dark mb-2 fw-bold text-uppercase px-3 py-2">Farming Innovation</span>
-                <h1 class="display-4 fw-bold">Connecting Farmers Directly to the Market</h1>
-                <p class="lead text-light opacity-90">Maximize crop yields with verified soil analytics and eliminate mediators for better profits.</p>
+<div class="home-page">
+
+
+<!-- ======================================================
+     HERO
+======================================================= -->
+
+<section class="agro-hero reveal">
+
+    <div class="hero-circle hero-circle-one"></div>
+    <div class="hero-circle hero-circle-two"></div>
+
+    <i class="fa-solid fa-leaf floating-leaf leaf-one"></i>
+
+    <i class="fa-solid fa-seedling floating-leaf leaf-two"></i>
+
+    <i class="fa-solid fa-wheat-awn floating-leaf leaf-three"></i>
+
+
+    <div class="row align-items-center g-5">
+
+
+        <div class="col-lg-7 hero-content">
+
+            <div class="hero-badge">
+
+                <i class="fa-solid fa-seedling"></i>
+
+                Smart Agriculture Platform
+
+            </div>
+
+
+            <h1 class="hero-title">
+
+                Connecting
+
+                <span>Farmers</span>
+
+                Directly to the Market
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                AGRO Portal brings farmers, buyers, agricultural
+                information and government schemes together in
+                one simple digital platform.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
                 {% if not user.is_authenticated %}
-                    <a href="{% url 'register' %}" class="btn btn-warning btn-lg fw-bold px-4 shadow">Get Started Now <i class="fa-solid fa-arrow-right ms-2"></i></a>
+
+                    <a
+                        href="{% url 'register' %}"
+                        class="btn hero-primary-btn me-2"
+                    >
+
+                        Get Started
+
+                        <i class="fa-solid fa-arrow-right ms-2"></i>
+
+                    </a>
+
                 {% endif %}
+
+
+                <a
+                    href="{% url 'marketplace' %}"
+                    class="btn hero-secondary-btn"
+                >
+
+                    <i class="fa-solid fa-store me-2"></i>
+
+                    Explore Marketplace
+
+                </a>
+
             </div>
-            <div class="col-lg-6">
-                <img src="{% static 'banner.png' %}" alt="Agro Crop Banner" class="banner-img">
-            </div>
+
         </div>
+
+
+        <div class="col-lg-5 hero-image-wrapper">
+
+            <img
+                src="{% static 'banner.png' %}"
+                alt="AGRO Portal Agriculture"
+                class="hero-image"
+            >
+
+        </div>
+
     </div>
 
-    <!-- NEWS & PORTAL UPDATES TICKER BLOCK -->
-    <div class="card border-success mb-5 shadow-sm">
-        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-            <h4 class="mb-0 fw-bold">📢 Latest Agriculture & Portal Updates</h4>
-            {% if user.is_superuser or user.is_staff %}
-                <a href="/admin/core/siteupdate/add/" class="btn btn-light btn-sm fw-bold">➕ Add Live Update</a>
-            {% endif %}
-        </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                {% for update in updates %}
-                    <li class="list-group-item py-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-1 text-success fw-bold">{{ update.title }}</h5>
-                            <div>
-                                <small class="text-muted me-3">{{ update.created_at|date:"d M Y" }}</small>
-                                {% if user.is_superuser or user.is_staff %}
-                                    <a href="/admin/core/siteupdate/{{ update.id }}/change/" class="badge bg-warning text-dark text-decoration-none">✏️ Edit / Delete</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <p class="mb-0 text-secondary">{{ update.content }}</p>
-                    </li>
-                {% empty %}
-                    <p class="text-muted text-center my-3">No news updates posted yet.</p>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+</section>
 
-    <!-- QUICK OPERATIONS BLOCK -->
-    <h3 class="fw-bold text-dark mb-4"><i class="fa-solid fa-circle-dot text-success me-2"></i>Quick Actions & Management</h3>
-    <div class="row g-4 mb-5">
-        <div class="col-md-3 col-sm-6">
-            <div class="card action-card p-4 text-center h-100 shadow-sm">
-                <div class="icon-square bg-success bg-opacity-10 text-success mx-auto">
-                    <i class="fa-solid fa-seedling"></i>
-                </div>
-                <h5 class="fw-bold text-dark">Track New Crop</h5>
-                <p class="text-muted small">Log fields, soil types, and sowed dates.</p>
-                <a href="{% url 'add_crop' %}" class="btn btn-success btn-sm w-100 mt-auto fw-bold">Add Crop <i class="fa-solid fa-plus ms-1"></i></a>
-            </div>
-        </div>
 
-        <div class="col-md-3 col-sm-6">
-            <div class="card action-card p-4 text-center h-100 shadow-sm">
-                <div class="icon-square bg-primary bg-opacity-10 text-primary mx-auto">
-                    <i class="fa-solid fa-cart-plus"></i>
-                </div>
-                <h5 class="fw-bold text-dark">Sell in Market</h5>
-                <p class="text-muted small">List harvest batches directly for buyers.</p>
-                <a href="{% url 'add_product' %}" class="btn btn-primary btn-sm w-100 mt-auto fw-bold">List Product <i class="fa-solid fa-plus ms-1"></i></a>
-            </div>
-        </div>
 
-        <div class="col-md-3 col-sm-6">
-            <div class="card action-card p-4 text-center h-100 shadow-sm">
-                <div class="icon-square bg-warning bg-opacity-10 text-warning mx-auto">
-                    <i class="fa-solid fa-user-plus"></i>
-                </div>
-                <h5 class="fw-bold text-dark">Add New Farmer</h5>
-                <p class="text-muted small">Register regional cooperative growers.</p>
-                <a href="{% url 'add_farmer' %}" class="btn btn-warning btn-sm w-100 mt-auto text-dark fw-bold">Add Farmer <i class="fa-solid fa-plus ms-1"></i></a>
-            </div>
-        </div>
+<!-- ======================================================
+     STATISTICS
+======================================================= -->
 
-        <div class="col-md-3">
-    <div class="card p-3 border-0 shadow-sm text-center h-100 rounded-4">
-        <div class="my-3">
-            <i class="fa-solid fa-globe fa-2x text-primary"></i>
-        </div>
-        <h5 class="fw-bold">Helpful Sites</h5>
-        <p class="text-muted small">Access external agricultural portals and resources.</p>
-        <div class="mt-auto">
-            <!-- This directs the button to /helpful-sites/ -->
-            <a href="{% url 'helpful_sites' %}" class="btn btn-primary w-100 fw-bold">
-                Visit Links <i class="fa-solid fa-arrow-right ms-1"></i>
-            </a>
-        </div>
-    </div>
-</div>
+<section class="home-section reveal delay-1">
 
-    <!-- CORE PORTALS -->
-    <h3 class="fw-bold text-dark mb-4"><i class="fa-solid fa-sliders text-success me-2"></i>Core Portals</h3>
     <div class="row g-4">
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm p-4 rounded-4 h-100 bg-white">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="bg-success text-white rounded-3 p-3 me-3 fs-3">
-                        <i class="fa-solid fa-shop"></i>
-                    </div>
-                    <div>
-                        <h4 class="fw-bold text-dark mb-0">Browse Marketplace</h4>
-                        <p class="text-muted mb-0">No mediator fees. Direct farmer-to-buyer transactions.</p>
-                    </div>
+
+
+        <div class="col-6 col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="stat-icon bg-success bg-opacity-10 text-success">
+
+                    <i class="fa-solid fa-seedling"></i>
+
                 </div>
-                <p class="text-secondary">View high-quality, verified listings of wheat, cotton, sugar, and organic vegetables posted live by growers.</p>
-                <a href="{% url 'marketplace' %}" class="btn btn-outline-success fw-bold px-4 mt-auto align-self-start">Go To Marketplace <i class="fa-solid fa-arrow-right ms-2"></i></a>
+
+                <div class="stat-number">
+
+                    100%
+
+                </div>
+
+                <div class="stat-label">
+
+                    Farmer Focused
+
+                </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-6">
-    <div class="card border-0 shadow-sm p-4 rounded-4 h-100 bg-white">
-        <div class="d-flex align-items-center mb-3">
-            <div class="bg-warning text-dark rounded-3 p-3 me-3 fs-3">
-                <i class="fa-solid fa-building-columns"></i>
+
+        <div class="col-6 col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+
+                    <i class="fa-solid fa-store"></i>
+
+                </div>
+
+                <div class="stat-number">
+
+                    Direct
+
+                </div>
+
+                <div class="stat-label">
+
+                    Market Access
+
+                </div>
+
             </div>
-            <div>
-                <h4 class="fw-bold text-dark mb-0">Government Schemes</h4>
-                <p class="text-muted mb-0">Subsidies, grants, and support campaigns.</p>
-            </div>
+
         </div>
-        <p class="text-secondary">Explore financial support plans and crop insurance setups specifically structured for active farms.</p>
-        <a href="{% url 'schemes' %}" class="btn btn-outline-warning text-dark fw-bold px-4 mt-auto align-self-start">
-            Explore Schemes <i class="fa-solid fa-arrow-right ms-2"></i>
-        </a>
+
+
+        <div class="col-6 col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+
+                    <i class="fa-solid fa-building-columns"></i>
+
+                </div>
+
+                <div class="stat-number">
+
+                    Easy
+
+                </div>
+
+                <div class="stat-label">
+
+                    Scheme Access
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-6 col-lg-3">
+
+            <div class="stat-card">
+
+                <div class="stat-icon bg-info bg-opacity-10 text-info">
+
+                    <i class="fa-solid fa-cloud-sun"></i>
+
+                </div>
+
+                <div class="stat-number">
+
+                    Live
+
+                </div>
+
+                <div class="stat-label">
+
+                    Weather Updates
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     QUICK ACTIONS
+======================================================= -->
+
+<section class="home-section reveal delay-2">
+
+    <div class="section-heading">
+
+        <h2>
+
+            <i class="fa-solid fa-bolt text-warning me-2"></i>
+
+            Quick Actions
+
+        </h2>
+
+        <p>
+
+            Access important agricultural tools and services quickly.
+
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="quick-card">
+
+                <div class="quick-icon bg-success bg-opacity-10 text-success">
+
+                    <i class="fa-solid fa-seedling"></i>
+
+                </div>
+
+                <h5>Track New Crop</h5>
+
+                <p class="text-muted small">
+
+                    Record fields, soil information and sowing dates.
+
+                </p>
+
+                <a
+                    href="{% url 'add_crop' %}"
+                    class="btn btn-success w-100"
+                >
+
+                    Add Crop
+
+                    <i class="fa-solid fa-plus ms-1"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="quick-card">
+
+                <div class="quick-icon bg-primary bg-opacity-10 text-primary">
+
+                    <i class="fa-solid fa-cart-plus"></i>
+
+                </div>
+
+                <h5>Sell in Market</h5>
+
+                <p class="text-muted small">
+
+                    List harvest products directly for potential buyers.
+
+                </p>
+
+                <a
+                    href="{% url 'add_product' %}"
+                    class="btn btn-primary w-100"
+                >
+
+                    List Product
+
+                    <i class="fa-solid fa-plus ms-1"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="quick-card">
+
+                <div class="quick-icon bg-warning bg-opacity-10 text-warning">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                </div>
+
+                <h5>Add Farmer</h5>
+
+                <p class="text-muted small">
+
+                    Register farmers and cooperative growers.
+
+                </p>
+
+                <a
+                    href="{% url 'add_farmer' %}"
+                    class="btn btn-warning text-dark w-100"
+                >
+
+                    Add Farmer
+
+                    <i class="fa-solid fa-plus ms-1"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="quick-card">
+
+                <div class="quick-icon bg-info bg-opacity-10 text-info">
+
+                    <i class="fa-solid fa-globe"></i>
+
+                </div>
+
+                <h5>Helpful Sites</h5>
+
+                <p class="text-muted small">
+
+                    Access useful agricultural portals and resources.
+
+                </p>
+
+                <a
+                    href="{% url 'helpful_sites' %}"
+                    class="btn btn-info text-white w-100"
+                >
+
+                    Visit Links
+
+                    <i class="fa-solid fa-arrow-right ms-1"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     NEWS
+======================================================= -->
+
+<section class="home-section reveal delay-3">
+
+    <div class="news-card">
+
+
+        <div class="news-header d-flex
+                    justify-content-between
+                    align-items-center
+                    flex-wrap gap-2">
+
+            <div>
+
+                <div class="fw-bold fs-5">
+
+                    <i class="fa-solid fa-bullhorn me-2"></i>
+
+                    Agriculture & Portal Updates
+
+                </div>
+
+                <small class="opacity-75">
+
+                    Latest information from AGRO Portal
+
+                </small>
+
+            </div>
+
+
+            {% if user.is_superuser or user.is_staff %}
+
+                <a
+                    href="/admin/core/siteupdate/add/"
+                    class="btn btn-light btn-sm fw-bold"
+                >
+
+                    <i class="fa-solid fa-plus me-1"></i>
+
+                    Add Update
+
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <div>
+
+            {% for update in updates %}
+
+                <div class="news-item">
+
+                    <div class="d-flex
+                                justify-content-between
+                                align-items-start
+                                gap-3">
+
+                        <div>
+
+                            <div class="news-title">
+
+                                {{ update.title }}
+
+                            </div>
+
+                            <p class="mb-1 mt-1 text-secondary">
+
+                                {{ update.content }}
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="text-end flex-shrink-0">
+
+                            <div class="news-date">
+
+                                {{ update.created_at|date:"d M Y" }}
+
+                            </div>
+
+
+                            {% if user.is_superuser or user.is_staff %}
+
+                                <a
+                                    href="/admin/core/siteupdate/{{ update.id }}/change/"
+                                    class="small text-warning text-decoration-none"
+                                >
+
+                                    Edit
+
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+                <div class="p-4 text-center text-muted">
+
+                    <i class="fa-solid fa-circle-info me-1"></i>
+
+                    No news updates posted yet.
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     CORE SERVICES
+======================================================= -->
+
+<section class="home-section reveal delay-4">
+
+    <div class="section-heading">
+
+        <h2>
+
+            <i class="fa-solid fa-layer-group text-success me-2"></i>
+
+            Core Agricultural Services
+
+        </h2>
+
+        <p>
+
+            Explore the main services available through AGRO Portal.
+
+        </p>
+
+    </div>
+
+
+    <div class="row g-4">
+
+
+        <div class="col-lg-6">
+
+            <div class="portal-card">
+
+                <div class="portal-icon bg-success text-white">
+
+                    <i class="fa-solid fa-store"></i>
+
+                </div>
+
+                <h4>
+
+                    Farmer Marketplace
+
+                </h4>
+
+                <p class="text-muted">
+
+                    Discover agricultural products listed directly
+                    by growers and connect with potential buyers.
+
+                </p>
+
+                <p class="text-secondary small">
+
+                    <i class="fa-solid fa-circle-check text-success me-1"></i>
+
+                    Direct farmer-to-buyer marketplace
+
+                </p>
+
+                <a
+                    href="{% url 'marketplace' %}"
+                    class="btn btn-outline-success mt-2"
+                >
+
+                    Explore Marketplace
+
+                    <i class="fa-solid fa-arrow-right ms-2"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="portal-card">
+
+                <div class="portal-icon bg-warning text-dark">
+
+                    <i class="fa-solid fa-building-columns"></i>
+
+                </div>
+
+                <h4>
+
+                    Government Schemes
+
+                </h4>
+
+                <p class="text-muted">
+
+                    Explore agricultural subsidies, support programs,
+                    grants and other government initiatives.
+
+                </p>
+
+                <p class="text-secondary small">
+
+                    <i class="fa-solid fa-circle-check text-success me-1"></i>
+
+                    Agricultural support information
+
+                </p>
+
+                <a
+                    href="{% url 'schemes' %}"
+                    class="btn btn-outline-warning text-dark mt-2"
+                >
+
+                    Explore Schemes
+
+                    <i class="fa-solid fa-arrow-right ms-2"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================================
+     FINAL CTA
+======================================================= -->
+
+<section class="final-cta text-center reveal">
+
+    <div class="position-relative">
+
+        <i class="fa-solid fa-seedling
+                  text-success
+                  fs-1
+                  mb-3"></i>
+
+
+        <h2>
+
+            Build a Smarter Agricultural Future
+
+        </h2>
+
+
+        <p class="mx-auto" style="max-width:650px;">
+
+            Connect with agricultural services, discover market
+            opportunities and manage farming activities through
+            AGRO Portal.
+
+        </p>
+
+
+        {% if not user.is_authenticated %}
+
+            <a
+                href="{% url 'register' %}"
+                class="btn btn-warning btn-lg fw-bold px-4 mt-3"
+            >
+
+                Join AGRO Portal
+
+                <i class="fa-solid fa-arrow-right ms-2"></i>
+
+            </a>
+
+        {% else %}
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="btn btn-light btn-lg fw-bold px-4 mt-3"
+            >
+
+                Open Dashboard
+
+                <i class="fa-solid fa-gauge ms-2"></i>
+
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
 </div>
-    </div>
+
+
+<!-- ======================================================
+     DARK / LIGHT MODE SCRIPT
+======================================================= -->
+
+<script>
+
+(function () {
+
+    const savedTheme = localStorage.getItem("agro-theme");
+
+    if (savedTheme === "dark") {
+
+        document.body.classList.add("dark-mode");
+
+    }
+
+})();
+
+
+function toggleAgroTheme() {
+
+    document.body.classList.toggle("dark-mode");
+
+    const isDark =
+        document.body.classList.contains("dark-mode");
+
+    localStorage.setItem(
+        "agro-theme",
+        isDark ? "dark" : "light"
+    );
+
+    updateThemeButton();
+
+}
+
+
+function updateThemeButton() {
+
+    const button =
+        document.getElementById("agro-theme-toggle");
+
+    if (!button) return;
+
+
+    const isDark =
+        document.body.classList.contains("dark-mode");
+
+
+    if (isDark) {
+
+        button.innerHTML =
+            '<i class="fa-solid fa-sun"></i>';
+
+        button.title = "Switch to Light Mode";
+
+    } else {
+
+        button.innerHTML =
+            '<i class="fa-solid fa-moon"></i>';
+
+        button.title = "Switch to Dark Mode";
+
+    }
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    updateThemeButton
+);
+
+</script>
 
 {% endblock %}
