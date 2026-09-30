@@ -32,6 +32,7 @@ urlpatterns = [
     # Marketplace Ownership Actions
     path('product/<int:product_id>/edit/', views.edit_product_view, name='edit_product'),
     path('product/<int:product_id>/delete/', views.delete_product_view, name='delete_product'),
+    path('product/image/<int:image_id>/delete/', views.delete_product_image_view, name='delete_product_image'),
     
     # Admin User/Farmer Management
     path('admin-panel/farmers/', views.farmer_list_view if hasattr(views, 'farmer_list_view') else views.homepage_view, name='farmer_list'),
