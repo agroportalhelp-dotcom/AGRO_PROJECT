@@ -3,39 +3,102 @@
 
 {% block content %}
 <div class="container my-5">
+
     <!-- Hero Section -->
     <div class="p-5 mb-4 bg-light rounded-3 border text-center">
-        <h1 class="display-5 fw-bold text-success">Welcome to AGRO Portal</h1>
-        <p class="fs-5 text-muted">Connecting local farmers directly to the marketplace and offering smart crop metrics.</p>
+        <h1 class="display-5 fw-bold text-success">
+            Welcome to AGRO Portal
+        </h1>
+        <p class="fs-5 text-muted">
+            Connecting local farmers directly to the marketplace and offering smart crop metrics.
+        </p>
+
         {% if user.is_authenticated %}
-            <!-- Redirect logged-in users to their actual dashboard -->
-            <a href="{% url 'dashboard' %}" class="btn btn-success btn-lg px-4 fw-bold">Go to Farmer Dashboard 🚜</a>
+            <a href="{% url 'dashboard' %}"
+               class="btn btn-success btn-lg px-4 fw-bold">
+                Go to Farmer Dashboard 🚜
+            </a>
         {% else %}
-            <a href="{% url 'login' %}" class="btn btn-success btn-lg px-4 me-2">Login</a>
-            <a href="{% url 'register' %}" class="btn btn-outline-success btn-lg px-4">Register</a>
+            <a href="{% url 'login' %}"
+               class="btn btn-success btn-lg px-4 me-2">Login</a>
+            <a href="{% url 'register' %}"
+               class="btn btn-outline-success btn-lg px-4">Register</a>
         {% endif %}
     </div>
 
-    <!-- Live Admin Updates News Ticker -->
-    <div class="card border-success mb-4 shadow-sm">
-        <div class="card-header bg-success text-white">
-            <h4 class="mb-0">📢 Latest Portal Updates</h4>
+    <!-- Latest Portal Updates -->
+    <div class="card border-success mb-4 shadow-sm rounded-4 overflow-hidden">
+
+        <div class="card-header bg-success text-white py-3">
+            <h4 class="mb-0">📢 Agriculture & Portal Updates</h4>
+            <small>Latest information from AGRO Portal</small>
         </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                {% for update in updates %}
-                    <li class="list-group-item py-3">
-                        <div class="d-flex justify-content-between">
-                            <h5 class="mb-1 fw-bold text-dark">{{ update.title }}</h5>
-                            <small class="text-muted">{{ update.created_at|date:"d M Y" }}</small>
-                        </div>
-                        <p class="mb-0 text-secondary">{{ update.content }}</p>
-                    </li>
-                {% empty %}
-                    <p class="text-muted text-center my-3">No updates available at the moment.</p>
-                {% endfor %}
-            </ul>
+
+        <div class="card-body p-0">
+
+            {% for update in updates %}
+                <div class="p-3 p-md-4 border-bottom">
+
+                    <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                        <h5 class="mb-0 fw-bold text-success">
+                            {{ update.title }}
+                        </h5>
+                        <small class="text-muted text-nowrap">
+                            📅 {{ update.created_at|date:"d M Y" }}
+                        </small>
+                    </div>
+
+                    <!-- Short Preview -->
+                    <div class="text-secondary">
+                        <p class="mb-2">
+                            <span id="preview-{{ forloop.counter }}">
+                                {{ update.content|striptags|truncatechars:180 }}
+                            </span>
+
+                            <span id="full-{{ forloop.counter }}"
+                                  style="display: none; white-space: pre-line;">
+                                {{ update.content }}
+                            </span>
+                        </p>
+
+                        {% if update.content|length > 180 %}
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-success rounded-pill"
+                                    id="toggle-{{ forloop.counter }}"
+                                    onclick="toggleUpdate({{ forloop.counter }})">
+                                Read More →
+                            </button>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            {% empty %}
+                <p class="text-muted text-center my-4">
+                    🌱 No updates available at the moment. Check back soon!
+                </p>
+            {% endfor %}
+
         </div>
     </div>
+
 </div>
+
+<script>
+function toggleUpdate(id) {
+    const preview = document.getElementById("preview-" + id);
+    const full = document.getElementById("full-" + id);
+    const button = document.getElementById("toggle-" + id);
+
+    if (full.style.display === "none") {
+        preview.style.display = "none";
+        full.style.display = "inline";
+        button.textContent = "Read Less ↑";
+    } else {
+        preview.style.display = "inline";
+        full.style.display = "none";
+        button.textContent = "Read More →";
+    }
+}
+</script>
 {% endblock %}
